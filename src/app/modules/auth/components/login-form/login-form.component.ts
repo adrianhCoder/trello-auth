@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { faPen, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 import {AuthService} from '@services/auth.service'
+import {RequestStatus} from '@models/request-status.model'
 
 @Component({
   selector: 'app-login-form',
@@ -19,7 +20,7 @@ export class LoginFormComponent {
   faEye = faEye;
   faEyeSlash = faEyeSlash;
   showPassword = false;
-  status: string = 'init';
+  status : RequestStatus = 'init';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,11 +36,11 @@ export class LoginFormComponent {
       this.authService.login(email,password)
       .subscribe({
         next: () =>{
-          this.status = "Succes";
+          this.status = "success";
           this.router.navigate(['/app'])
         },
         error: () =>{
-          this.status =" Failed";
+          this.status ="failed";
 
         }
       })
