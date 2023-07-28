@@ -13,6 +13,11 @@ import {AuthService} from '@services/auth.service'
   templateUrl: './register-form.component.html',
 })
 export class RegisterFormComponent {
+
+  formUser = this.formBuilder.nonNullable.group({
+    email: ['', [Validators.email, Validators.required]],
+  });
+
   form = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required]],
     email: ['', [Validators.email, Validators.required]],
@@ -22,6 +27,7 @@ export class RegisterFormComponent {
     validators: [ CustomValidators.MatchValidator('password', 'confirmPassword') ]
   });
   status: RequestStatus = 'init';
+  statusUser: RequestStatus = 'init';
   faEye = faEye;
   faEyeSlash = faEyeSlash;
   showPassword = false;
@@ -55,5 +61,10 @@ export class RegisterFormComponent {
     } else {
       this.form.markAllAsTouched();
     }
+  }
+
+  validateUser(){
+    this.status = 'loading';
+    
   }
 }
