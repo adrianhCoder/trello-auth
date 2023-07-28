@@ -7,7 +7,7 @@ import {getCookie, setCookie , removeCookie} from 'typescript-cookie'
 })
 export class TokenService {
 
-  token_name: string = 'token_name';
+  token_name: string = 'token-trello';
 
   constructor() { }
 
