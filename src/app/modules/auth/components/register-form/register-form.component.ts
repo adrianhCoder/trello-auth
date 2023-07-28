@@ -31,6 +31,7 @@ export class RegisterFormComponent {
   faEye = faEye;
   faEyeSlash = faEyeSlash;
   showPassword = false;
+  showRegister = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,7 +65,30 @@ export class RegisterFormComponent {
   }
 
   validateUser(){
-    this.status = 'loading';
-    
+    if (this.formUser.valid){
+     this.statusUser = 'loading';
+     const { email } = this.formUser.getRawValue();
+     this.authService.isAvailable(email).subscribe({
+      next: (response) =>{
+        this.statusUser = 'success';
+        if(response.isAvailable){
+          this.form.controls.email.setValue(email)
+          this.showRegister = true;
+        }else{
+
+          this.router.navigate(['/login'], {queryParams:{email}});
+
+        }
+
+      },
+      error: (error) =>{
+        this.status = 'failed';
+        console.log(error);
+      }
+     })
+    }else{
+      this.formUser.markAllAsTouched();
+    }
+
   }
 }
