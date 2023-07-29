@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   faBell,
   faInfoCircle,
@@ -8,13 +8,13 @@ import {
 
 import { AuthService } from '@services/auth.service';
 import { Router } from '@angular/router';
-
+import { User } from '@models/user.model';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
 })
-export class NavbarComponent   {
+export class NavbarComponent implements OnInit {
   faBell = faBell;
   faInfoCircle = faInfoCircle;
   faClose = faClose;
@@ -23,14 +23,19 @@ export class NavbarComponent   {
   isOpenOverlayAvatar = false;
   isOpenOverlayBoards = false;
 
-  user$ = this.authService.user$;
+  user: User  | null = null;
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
 
-
+  ngOnInit(){
+    this.authService.getProfile()
+    .subscribe(user => {
+      this.user = user;
+    })
+  }
 
   logout(){
     this.authService.logout();
