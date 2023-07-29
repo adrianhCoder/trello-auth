@@ -8,6 +8,7 @@ import {TokenService} from '@services/token.service'
 import {ResponseLogin} from '@models/auth.model'
 
 import { User } from '@models/user.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ import { User } from '@models/user.model';
 export class AuthService {
 
   apiUrl = environment.API_URL;
+  user$ = new BehaviorSubject<User | null>(null);
 
   constructor(
     private http: HttpClient,
@@ -73,7 +75,11 @@ export class AuthService {
         headers :{
           Authorization : `Bearer ${token}`
         }
-      });
+      }).pipe(
+          tap(user =>{
+            this.user$.next(user);
+          })
+      );
   }
 
 
